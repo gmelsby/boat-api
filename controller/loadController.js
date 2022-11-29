@@ -38,6 +38,11 @@ router.post('/', (req, res) => {
 
 
 router.get('/:loadId', (req, res) => {
+  // make sure id is a numerical
+  if (isNan(req.params.loadId)) {
+      return res.status(404).send({"Error": "The boat does not exist"});
+  }
+
   model.getLoad(req.params.loadId)
     .then(load => {
         if (load === 404) {
