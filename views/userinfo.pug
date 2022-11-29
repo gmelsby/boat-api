@@ -1,0 +1,13 @@
+doctype html 
+head 
+    style 
+        include ../public/stylesheets/style.css
+
+body 
+    #message 
+        h1 Hi, #{email}! 
+        h3 Your unique ID is #{sub}
+        h3 Below is your JWT that you can use as a bearer token in calls to our API. Take good care of it! 
+        p #{jwt}
+        p &nbsp 
+        a(href='/logout') Logout

@@ -1,0 +1,19 @@
+@import url(//fonts.googleapis.com/css2?family=Roboto);
+body {
+  font-family: 'Roboto';
+  background-color: silver;
+}
+
+div {
+  background-color:aliceblue;
+  margin:20px;
+  border:black;
+  border-radius:3px;
+  border-style:solid;
+  padding:10px 20px 20px;
+  text-align:center;
+}
+
+p {
+  word-break: break-all;
+}
