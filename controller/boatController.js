@@ -97,8 +97,13 @@ router.get('/', checkJwt, handleJwtErrors, (req, res) => {
         return res.status(200).send(reply);
       })
       .catch(err => {
-        console.log(err);
-        res.status(500).send({"Error": "Something went wrong on our end"});
+        if (err.code === 3) {
+          res.status(400).json({"Error": "Cursor in request params not recognized"});
+        }
+        else {
+          console.log(err);
+          res.status(500).send({"Error": "Something went wrong on our end"});
+        }
       });
   }
 });
@@ -254,7 +259,7 @@ router.delete('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) =>
   }
 
   if (isNaN(req.params.boatId)) {
-    return res.status(404).send({"Error": "The load does not exist"});
+    return res.status(403).send({'Error': 'The boat is owned by someone else or does not exist'});
   }
 
   model.removeLoadFromBoat(req.params.boatId, req.params.loadId, req.auth.payload.sub)

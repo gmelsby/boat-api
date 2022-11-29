@@ -145,7 +145,7 @@ async function putBoat(boatId, ownerId, name, type, length) {
 }
 
 /**
- * Deletes the boat with the passed-in id.
+ * Deletes the boat with the passed-in id. Also sets all loads on board to no longer be on board
  * @param {string} boatId 
  * @param {string} ownerId
  * @returns promise resolving to integer indicating appropriate code.
@@ -164,6 +164,12 @@ async function deleteBoat(boatId, ownerId) {
   // check that ownership is correct for boat
   if (existingBoatResult[0].owner !== ownerId) {
     return 403;
+  }
+
+  // change all loads on board to have null carrier
+  const loads = await getLoadsOnBoat(boatId);
+  for (const load of loads) {
+    await removeLoadFromBoat(boatId, load.id)
   }
 
   await ds.delete(boatKey);
