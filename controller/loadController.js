@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
 
 router.get('/:loadId', (req, res) => {
   // make sure id is a numerical
-  if (isNan(req.params.loadId)) {
+  if (isNaN(req.params.loadId)) {
       return res.status(404).send({"Error": "The boat does not exist"});
   }
 
@@ -75,8 +75,13 @@ router.get('/', (req, res) => {
       return res.status(200).send(reply);
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).send({"Error": "Something went wrong on our end"});
+      if (err.code === 3) {
+        res.status(400).json({"Error": "Cursor in request params not recognized"});
+      }
+      else {
+        console.log(err);
+        res.status(500).send({"Error": "Something went wrong on our end"});
+      }
     });
 });
 
