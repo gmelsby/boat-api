@@ -54,22 +54,28 @@ router.get('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
     console.log("bad credentials");
     return res.status(401).send({"Error": "Bad Credentials"});
   }
-  // sends owner's boats if Jwt is valid
-  else {
-    const sub = req.auth.payload.sub;
-    model.getBoat(req.params.boatId, sub)
-      .then(boat => {
-          if (boat === 403) {
-            return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
-          }
-          boat.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + boat.id;
-          return res.status(200).send(boat);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).send({"Error": "Something went wrong on our end"});
-      });
+
+  // check that boatId is a number
+  if (isNaN(req.params.boatId)) {
+    return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
   }
+  
+
+  // send boat
+  const sub = req.auth.payload.sub;
+  model.getBoat(req.params.boatId, sub)
+    .then(boat => {
+        if (boat === 403) {
+          return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
+        }
+        boat.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + boat.id;
+        boat.loads = boat.loads.map(l =>({"id": l.id, "self": req.protocol + "://" + req.get("host") + '/loads/' + l.id}));
+        return res.status(200).send(boat);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send({"Error": "Something went wrong on our end"});
+    });
 });
 
 
@@ -86,6 +92,7 @@ router.get('/', checkJwt, handleJwtErrors, (req, res) => {
       .then(reply => {
         reply.boats.forEach(boat => {
           boat.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + boat.id;
+          boat.loads = boat.loads.map(l =>({"id": l.id, "self": req.protocol + "://" + req.get("host") + '/loads/' + l.id}));
         });
         return res.status(200).send(reply);
       })
@@ -178,6 +185,11 @@ router.delete('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
     return res.status(401).send({"Error": "Bad Credentials"});
   }
 
+  // we know boat doesn't exist if id is not a number
+  if (isNaN(req.params.boatId)) {
+    res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
+  }
+
   const sub = req.auth.payload.sub;
   model.deleteBoat(req.params.boatId, sub)
     .then(deleteStatus => {
@@ -195,6 +207,75 @@ router.delete('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
       res.status(500).send({"Error": "Something went wrong on our end"});
     });
 });
+
+
+router.put('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
+  // sends error message if Jwt is missing or invalid
+  if (req.auth.error !== undefined) {
+    return res.status(401).send({"Error": "Bad Credentials"});
+  }
+
+  // we know boat doesn't exist if id is not a number
+  if (isNaN(req.params.boatId)) {
+    return res.status(403).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on another boat'});
+  }
+
+  // we know load doesn't exist if id is not a number
+  if (isNaN(req.params.loadId)) {
+    return res.status(404).send({"Error": "The load does not exist"});
+  }
+
+  model.putLoadOnBoat(req.params.boatId, req.params.loadId, req.auth.payload.sub)
+    .then(code => {
+      switch(code) {
+        case 404:
+          res.status(code).send({'Error': 'The load does not exist'});
+          break;
+        case 403:
+          res.status(code).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on another boat'});
+          break;
+        default:
+          res.status(204).end();
+        } 
+    })   
+    .catch(e => {
+        res.status(500).json({"Error": "Something went wrong on our end"});
+    });
+});
+
+
+router.delete('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
+  // sends error message if Jwt is missing or invalid
+  if (req.auth.error !== undefined) {
+    return res.status(401).send({"Error": "Bad Credentials"});
+  }
+  if (isNaN(req.params.loadId)) {
+    return res.status(404).send({"Error": "The load does not exist"});
+  }
+
+  if (isNaN(req.params.boatId)) {
+    return res.status(404).send({"Error": "The load does not exist"});
+  }
+
+  model.removeLoadFromBoat(req.params.boatId, req.params.loadId, req.auth.payload.sub)
+    .then(code => {
+      switch(code) {
+        case 204:
+          res.status(204).end();
+          break;
+        case 404:
+          res.status(code).send({'Error': 'The load does not exist or is not on this boat'});
+          break;
+        case 403:
+          res.status(code).send({'Error': 'The boat is owned by someone else or does not exist'});
+      }
+    })
+    .catch(e => {
+      res.status(500).json({"Error": "Something went wrong on our end"});
+    });
+});
+
+
 
 export { router };
 
