@@ -76,7 +76,6 @@ async function postBoat(name, type, length, owner) {
   const key = ds.key(BOAT);
   const newBoat = { name, type, length, owner };
   await ds.save({ "key": key, "data": newBoat });
-  console.log(`made new boat ${JSON.stringify(newBoat)}`)
   newBoat.id = key.id;
   newBoat.loads = []
   return newBoat;
@@ -116,7 +115,7 @@ async function patchBoat(boatId, ownerId, updates) {
   await ds.save({ "key": boatKey, "data": existingBoatResult[0] });
   // add id to boat
   existingBoatResult[0].id = boatId;
-  existingBoatResult[0].loads = getLoadsOnBoat(boatId);
+  existingBoatResult[0].loads = await getLoadsOnBoat(boatId);
   return existingBoatResult[0];
 }
 
@@ -140,7 +139,7 @@ async function putBoat(boatId, ownerId, name, type, length) {
   await ds.save({ "key": boatKey, "data": newBoat});
   // place id back on new boat
   newBoat.id = boatId;
-  existingBoatResult[0].loads = getLoadsOnBoat(boatId);
+  newBoat.loads = await getLoadsOnBoat(boatId);
   return newBoat;
 }
 
@@ -169,7 +168,7 @@ async function deleteBoat(boatId, ownerId) {
   // change all loads on board to have null carrier
   const loads = await getLoadsOnBoat(boatId);
   for (const load of loads) {
-    await removeLoadFromBoat(boatId, load.id)
+    await removeLoadFromBoat(boatId, load.id, ownerId);
   }
 
   await ds.delete(boatKey);

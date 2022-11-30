@@ -16,6 +16,15 @@ router.use((err, req, res, next) => {
   next();
 });
 
+// handles case where loadId parameter is not a number
+// to be used in all routes that use loadId path parameter
+const loadIdIsNumber = (req, res, next) => {
+  if (isNaN(req.params.loadId)) {
+    return res.status(404).send({"Error": "Load does not exist"});
+  }
+  next();
+};
+
 
 router.post('/', (req, res) => {
   // sends error message if Jwt not valid
@@ -37,7 +46,7 @@ router.post('/', (req, res) => {
 });
 
 
-router.get('/:loadId', (req, res) => {
+router.get('/:loadId', loadIdIsNumber, (req, res) => {
   // make sure id is a numerical
   if (isNaN(req.params.loadId)) {
       return res.status(404).send({"Error": "The boat does not exist"});
@@ -86,12 +95,7 @@ router.get('/', (req, res) => {
 });
 
 
-router.put('/:loadId', (req, res) => {
-  // we know load doesn't exist if id isn't a number
-  if (isNaN(req.params.loadId)) {
-    return res.status(404).send({"Error": "Load does not exist"});
-  }
-
+router.put('/:loadId', loadIdIsNumber, (req, res) => {
   // check that load body is valid
   const validation_results = loadBodyIsValid(req.body);
   if (validation_results.Error !== undefined) {
@@ -120,12 +124,7 @@ router.put('/:loadId', (req, res) => {
 
 
 
-router.patch('/:loadId', (req, res) => {
-  // we know load doesn't exist if id isn't a number
-  if (isNaN(req.params.loadId)) {
-    return res.status(404).send({"Error": "Load does not exist"});
-  }
-
+router.patch('/:loadId', loadIdIsNumber, (req, res) => {
   // check that load body is valid
   const validation_results = loadBodyIsValid(req.body, true);
   if (validation_results.Error !== undefined) {
@@ -155,11 +154,7 @@ router.patch('/:loadId', (req, res) => {
 
 
 
-router.delete('/:loadId', (req, res) => {
-  if (isNaN(req.params.loadId)) {
-    return res.status(404).send({"Error": "Load does not exist"});
-  }
-
+router.delete('/:loadId', loadIdIsNumber, (req, res) => {
   model.deleteLoad(req.params.loadId)
     .then(deleteStatus => {
       switch(deleteStatus) {

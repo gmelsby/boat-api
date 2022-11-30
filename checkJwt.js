@@ -10,14 +10,11 @@ const checkJwt = auth({
 });
 
 const handleJwtErrors = (err, req, res, next) => {
-  console.log('jwt error middleware activated');
+  // sends error message if JWT not valid
   if (err.status === 401) {
-    req.auth = {"error": "Bad Credentials"};
-    next();
+    return res.status(401).send({"Error": "Bad Credentials"});
   }
-  else {
-    res.status(500).send({"Error": "Something went wrong on our end"});
-  }
+  next();
 }
 
 export default checkJwt;
