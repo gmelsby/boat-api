@@ -29,7 +29,6 @@ router.post('/', checkJwt, handleJwtErrors, (req, res) => {
 
   // creates and sends new boat if Jwt valid
   const sub = req.auth.payload.sub;
-  console.log(req.body);
   model.postBoat(req.body.name, req.body.type, req.body.length, sub)
     .then(createdBoat => {
       createdBoat.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + createdBoat.id;
@@ -45,7 +44,6 @@ router.post('/', checkJwt, handleJwtErrors, (req, res) => {
 router.get('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
   // return 401 if authentication error
   if (req.auth.error !== undefined) {
-    console.log("bad credentials");
     return res.status(401).send({"Error": "Bad Credentials"});
   }
 
@@ -76,7 +74,6 @@ router.get('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
 router.get('/', checkJwt, handleJwtErrors, (req, res) => {
   // return 401 if authentication error
   if (req.auth.error !== undefined) {
-    console.log("bad credentials");
     return res.status(401).send({"Error": "Bad Credentials"});
   }
   // sends owner's boats if Jwt is valid

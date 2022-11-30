@@ -1,4 +1,4 @@
-import { ds, fromDatastore } from '../datastore.js'
+import { ds, nameFromDatastore } from '../datastore.js'
 
 const USER = 'User';
 
@@ -18,4 +18,15 @@ async function createUserIfNew(sub, email) {
   await ds.save({ "key": key, "data": { email } });
 }
 
-export { createUserIfNew };
+/**
+ * Gets a list of all users
+ * @returns promise resolving to non-paginated list of all users
+ */
+async function getUsers() {
+  let q = ds.createQuery(USER);
+  const results = await ds.runQuery(q);
+  results[0] = results[0].map(nameFromDatastore);
+  return results[0];
+}
+
+export { createUserIfNew, getUsers };

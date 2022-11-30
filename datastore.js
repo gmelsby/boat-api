@@ -7,4 +7,9 @@ const fromDatastore = item => {
   return item;
 }
 
-export { ds, Datastore, fromDatastore };
+const nameFromDatastore = item => {
+  item.id = item[Datastore.KEY].name;
+  return item;
+}
+
+export { ds, Datastore, fromDatastore, nameFromDatastore };
