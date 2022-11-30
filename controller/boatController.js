@@ -21,12 +21,6 @@ router.use((err, req, res, next) => {
 
 
 router.post('/', checkJwt, handleJwtErrors, (req, res) => {
-  // sends error message if Jwt not valid
-  if (req.auth.error !== undefined) {
-    console.log("bad credentials");
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-
   // check that boat body is valid
   const validation_results = boatBodyIsValid(req.body);
   if (validation_results.Error !== undefined) {
@@ -109,11 +103,6 @@ router.get('/', checkJwt, handleJwtErrors, (req, res) => {
 });
 
 router.put('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
-  // sends error message if Jwt is missing or invalid
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-
   // we know boat doesn't exist if id isn't a number
   if (isNaN(req.params.boatId)) {
     return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
@@ -135,6 +124,7 @@ router.put('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
           break;
         default:
           updatedBoat.self = req.protocol + "://" + req.get("host") + req.baseUrl + "/" + updatedBoat.id;
+          updatedBoat.loads = updatedBoat.loads.map(l =>({"id": l.id, "self": req.protocol + "://" + req.get("host") + '/loads/' + l.id}));
           res.status(200).json(updatedBoat);
       }
     })
@@ -147,11 +137,6 @@ router.put('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
 
 
 router.patch('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
-  // sends error message if Jwt is missing or invalid
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-
   // we know boat doesn't exist if id isn't a number
   if (isNaN(req.params.boatId)) {
     return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
@@ -173,6 +158,7 @@ router.patch('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
           break;
         default:
           updatedBoat.self = req.protocol + "://" + req.get("host") + req.baseUrl + "/" + updatedBoat.id;
+          updatedBoat.loads = updatedBoat.loads.map(l =>({"id": l.id, "self": req.protocol + "://" + req.get("host") + '/loads/' + l.id}));
           res.status(200).json(updatedBoat);
       }
     })
@@ -185,14 +171,9 @@ router.patch('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
 
 
 router.delete('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
-  // sends error message if Jwt is missing or invalid
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-
   // we know boat doesn't exist if id is not a number
   if (isNaN(req.params.boatId)) {
-    res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
+    return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
   }
 
   const sub = req.auth.payload.sub;
@@ -215,11 +196,6 @@ router.delete('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
 
 
 router.put('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
-  // sends error message if Jwt is missing or invalid
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-
   // we know boat doesn't exist if id is not a number
   if (isNaN(req.params.boatId)) {
     return res.status(403).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on another boat'});
@@ -250,10 +226,6 @@ router.put('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
 
 
 router.delete('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
-  // sends error message if Jwt is missing or invalid
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
   if (isNaN(req.params.loadId)) {
     return res.status(404).send({"Error": "The load does not exist"});
   }
