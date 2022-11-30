@@ -20,6 +20,8 @@ async function getLoad(loadId) {
 
 /**
  * Returns a promise resolving to an array of all loads, paginated with 5 loads per page
+ * @param {object} req the request object
+ * @returns promise resolving to object containing list of all loads, 5 loads per page
  */
 async function getLoads(req) {
   let countQuery = ds.createQuery(LOAD).select('__key__');
@@ -54,7 +56,6 @@ async function postLoad(volume, item, creation_date) {
   const newLoad = { volume, item, creation_date };
   newLoad.carrier = null;
   await ds.save({ "key": key, "data": newLoad });
-  console.log(`made new load ${JSON.stringify(newLoad)}`)
   newLoad.id = key.id;
   return newLoad;
 }
@@ -82,8 +83,6 @@ async function patchLoad(loadId, updates) {
       existingLoad[0][property] = updates[property];
     }
   }
-
-  console.log(existingLoad[0])
 
   // save to datastore
   await ds.save({ "key": loadKey, "data": existingLoad[0] });
