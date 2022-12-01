@@ -15,4 +15,26 @@ router.get('/', acceptJson, (req, res) => {
     });
 });
 
+router.post('/', function (req, res){
+    res.set('Allow', 'GET');
+    res.status(405).end();
+});
+
+router.put('/', function (req, res){
+    res.set('Allow', 'GET');
+    res.status(405).end();
+});
+
+router.patch('/', function (req, res){
+    res.set('Allow', 'GET');
+    res.status(405).end();
+});
+
+router.delete('/', function (req, res){
+    res.set('Allow', 'GET');
+    res.status(405).end();
+});
+
+
+
 export { router };
