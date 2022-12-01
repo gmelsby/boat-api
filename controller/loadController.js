@@ -47,6 +47,45 @@ router.post('/', (req, res) => {
 });
 
 
+router.get('/', acceptJson, (req, res) => {
+  model.getLoads(req)
+    .then(reply => {
+      reply.loads.forEach(load => {
+        load.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + load.id;
+        if (load.carrier !== null && load.carrier !== undefined) {
+            load.carrier = {"id": load.carrier, "self": req.protocol + "://" + req.get("host") + '/boats/' + load.carrier};
+        }
+      });
+      return res.status(200).send(reply);
+    })
+    .catch(err => {
+      if (err.code === 3) {
+        res.status(400).json({"Error": "Cursor in request params not recognized"});
+      }
+      else {
+        console.log(err);
+        res.status(500).send({"Error": "Something went wrong on our end"});
+      }
+    });
+});
+
+router.put('/', function (req, res){
+    res.set('Allow', 'POST, GET');
+    res.status(405).end();
+});
+
+router.patch('/', function (req, res){
+    res.set('Allow', 'POST, GET');
+    res.status(405).end();
+});
+
+router.delete('/', function (req, res){
+    res.set('Allow', 'POST, GET');
+    res.status(405).end();
+});
+
+
+
 router.get('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
   // make sure id is a numerical
   if (isNaN(req.params.loadId)) {
@@ -72,28 +111,6 @@ router.get('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
     });
 });
 
-
-router.get('/', acceptJson, (req, res) => {
-  model.getLoads(req)
-    .then(reply => {
-      reply.loads.forEach(load => {
-        load.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + load.id;
-        if (load.carrier !== null && load.carrier !== undefined) {
-            load.carrier = {"id": load.carrier, "self": req.protocol + "://" + req.get("host") + '/boats/' + load.carrier};
-        }
-      });
-      return res.status(200).send(reply);
-    })
-    .catch(err => {
-      if (err.code === 3) {
-        res.status(400).json({"Error": "Cursor in request params not recognized"});
-      }
-      else {
-        console.log(err);
-        res.status(500).send({"Error": "Something went wrong on our end"});
-      }
-    });
-});
 
 
 router.put('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
@@ -172,6 +189,13 @@ router.delete('/:loadId', loadIdIsNumber, (req, res) => {
       res.status(500).send({"Error": "Something went wrong on our end"});
     });
 });
+
+router.post('/:loadId', function (req, res){
+    res.set('Allow', 'GET, PATCH, PUT, DELETE');
+    res.status(405).end();
+});
+
+
 
 export { router };
 

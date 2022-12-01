@@ -167,7 +167,6 @@ router.patch('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
 });
 
 
-
 router.delete('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
   // we know boat doesn't exist if id is not a number
   if (isNaN(req.params.boatId)) {
@@ -190,6 +189,12 @@ router.delete('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
       console.log(err);
       res.status(500).send({"Error": "Something went wrong on our end"});
     });
+});
+
+
+router.post('/:boatId', function (req, res){
+    res.set('Allow', 'GET, PATCH, PUT, DELETE');
+    res.status(405).end();
 });
 
 
@@ -250,7 +255,20 @@ router.delete('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) =>
     });
 });
 
+router.get('/:boatId/loads/:loadId', function (req, res){
+    res.set('Allow', 'PUT, DELETE');
+    res.status(405).end();
+});
 
+router.post('/:boatId/loads/:loadId', function (req, res){
+    res.set('Allow', 'PUT, DELETE');
+    res.status(405).end();
+});
+
+router.patch('/:boatId/loads/:loadId', function (req, res){
+    res.set('Allow', 'PUT, DELETE');
+    res.status(405).end();
+});
 
 export { router };
 
