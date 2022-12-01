@@ -1,47 +1,47 @@
 /**
  * Validates whether a boat name or type is valid or not
- * A boat name or type must be a string between 1 and 25 characters (inclusive)
+ * A boat name or type must be a string between 1 and 30 characters (inclusive)
  * There must not be whitespace at the beginning or end of the name or type
- * @param {boat_string} string
+ * @param {str} string
  * @returns: boolean indicating whether boat string is valid or not
  */
-const boatStringIsValid = (boat_string) => {
-  // makes sure type of boat_string is string
-  if (typeof boat_string !== 'string') {
+const stringIsValid = (str) => {
+  // makes sure type of str is string
+  if (typeof str !== 'string') {
     return false;
   }
 
   // length test
-  if (boat_string.length <= 0 || boat_string.length > 30) {
+  if (str.length <= 0 || str.length > 30) {
     return false;
   }
 
   for (const char of '<>{}[]') {
-    if (boat_string.includes(char)) {
+    if (str.includes(char)) {
       return false;
     }
   }
 
   // whitespace test
-  if (boat_string.trim() !== boat_string) {
+  if (str.trim() !== str) {
     return false;
   }
 
   return true;
 } 
 
-const lengthIsValid = (boat_length) => {
-  // checks length is a number
-  if (typeof boat_length !== 'number') {
+const numIsValid = (num) => {
+  // checks num is a number
+  if (typeof num !== 'number') {
     return false;
   }
 
-  // checks length is non-negative
-  if (boat_length <= 0) {
+  // checks num is non-negative
+  if (num <= 0) {
     return false;
   }
 
-  if (!Number.isInteger(boat_length)) {
+  if (!Number.isInteger(num)) {
     return false;
   }
 
@@ -73,17 +73,17 @@ const boatBodyIsValid = (requestBody, isPatch) => {
   }
 
   // check that name, if exists, is valid
-  if (Object.keys(requestBody).includes('name') && !boatStringIsValid(requestBody['name'])) {
+  if (Object.keys(requestBody).includes('name') && !stringIsValid(requestBody['name'])) {
     return { "Error": "name value in request is not valid"};
   }
 
   // check that type, if exists, is valid
-  if (Object.keys(requestBody).includes('type') && !boatStringIsValid(requestBody['type'])) {
+  if (Object.keys(requestBody).includes('type') && !stringIsValid(requestBody['type'])) {
     return { "Error": "type value in request is not valid"};
   }
 
   // check that length, if exists, is valid
-  if (Object.keys(requestBody).includes('length') && !lengthIsValid(requestBody['length'])) {
+  if (Object.keys(requestBody).includes('length') && !numIsValid(requestBody['length'])) {
     return { "Error": "length value in request is not valid"};
   }
 
@@ -154,12 +154,12 @@ const loadBodyIsValid = (requestBody, isPatch) => {
   }
 
   // check that volume, if exists, is valid
-  if (Object.keys(requestBody).includes('volume') && !lengthIsValid(requestBody['volume'])) {
+  if (Object.keys(requestBody).includes('volume') && !numIsValid(requestBody['volume'])) {
     return { "Error": "volume value in request is not valid" };
   }
 
   // check that item, if exists, is valid
-  if (Object.keys(requestBody).includes('item') && !boatStringIsValid(requestBody['item'])) {
+  if (Object.keys(requestBody).includes('item') && !stringIsValid(requestBody['item'])) {
     return { "Error": "item value in request is not valid" };
   }
 
