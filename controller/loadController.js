@@ -27,7 +27,7 @@ const loadIdIsNumber = (req, res, next) => {
 };
 
 
-router.post('/', (req, res) => {
+router.post('/', acceptJson, (req, res) => {
   // sends error message if Jwt not valid
   // check that load body is valid
   const validation_results = loadBodyIsValid(req.body);

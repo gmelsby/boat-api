@@ -21,7 +21,7 @@ router.use((err, req, res, next) => {
 });
 
 
-router.post('/', checkJwt, handleJwtErrors, (req, res) => {
+router.post('/', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
   // check that boat body is valid
   const validation_results = boatBodyIsValid(req.body);
   if (validation_results.Error !== undefined) {

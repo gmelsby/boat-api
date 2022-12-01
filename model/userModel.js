@@ -11,7 +11,6 @@ async function createUserIfNew(sub, email) {
   const key = ds.key([USER, sub]);
   const existingUserResult = await ds.get(key);
   if (existingUserResult[0] !== undefined && existingUserResult[0] !== null) {
-    console.log("user already exists");
     return;
   }
  
