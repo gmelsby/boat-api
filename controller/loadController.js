@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import * as model from '../model/loadModel.js';
 import { loadBodyIsValid } from '../validation.js';
+import acceptJson from '../acceptJson.js';
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -46,7 +47,7 @@ router.post('/', (req, res) => {
 });
 
 
-router.get('/:loadId', loadIdIsNumber, (req, res) => {
+router.get('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
   // make sure id is a numerical
   if (isNaN(req.params.loadId)) {
       return res.status(404).send({"Error": "The boat does not exist"});
@@ -72,7 +73,7 @@ router.get('/:loadId', loadIdIsNumber, (req, res) => {
 });
 
 
-router.get('/', (req, res) => {
+router.get('/', acceptJson, (req, res) => {
   model.getLoads(req)
     .then(reply => {
       reply.loads.forEach(load => {
@@ -95,7 +96,7 @@ router.get('/', (req, res) => {
 });
 
 
-router.put('/:loadId', loadIdIsNumber, (req, res) => {
+router.put('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
   // check that load body is valid
   const validation_results = loadBodyIsValid(req.body);
   if (validation_results.Error !== undefined) {
@@ -124,7 +125,7 @@ router.put('/:loadId', loadIdIsNumber, (req, res) => {
 
 
 
-router.patch('/:loadId', loadIdIsNumber, (req, res) => {
+router.patch('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
   // check that load body is valid
   const validation_results = loadBodyIsValid(req.body, true);
   if (validation_results.Error !== undefined) {

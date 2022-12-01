@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import * as model from '../model/boatModel.js';
 import checkJwt, { handleJwtErrors } from '../checkJwt.js';
 import { boatBodyIsValid } from '../validation.js';
+import acceptJson from '../acceptJson.js';
 
 
 
@@ -41,7 +42,7 @@ router.post('/', checkJwt, handleJwtErrors, (req, res) => {
 });
 
 
-router.get('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
+router.get('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
   // return 401 if authentication error
   if (req.auth.error !== undefined) {
     return res.status(401).send({"Error": "Bad Credentials"});
@@ -71,7 +72,7 @@ router.get('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
 });
 
 
-router.get('/', checkJwt, handleJwtErrors, (req, res) => {
+router.get('/', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
   // return 401 if authentication error
   if (req.auth.error !== undefined) {
     return res.status(401).send({"Error": "Bad Credentials"});
@@ -99,7 +100,7 @@ router.get('/', checkJwt, handleJwtErrors, (req, res) => {
   }
 });
 
-router.put('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
+router.put('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
   // we know boat doesn't exist if id isn't a number
   if (isNaN(req.params.boatId)) {
     return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
@@ -133,7 +134,7 @@ router.put('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
 
 
 
-router.patch('/:boatId', checkJwt, handleJwtErrors, (req, res) => {
+router.patch('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
   // we know boat doesn't exist if id isn't a number
   if (isNaN(req.params.boatId)) {
     return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});

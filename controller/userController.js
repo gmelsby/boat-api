@@ -1,9 +1,10 @@
 import express from 'express';
 import { getUsers } from '../model/userModel.js';
+import acceptJson from '../acceptJson.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', acceptJson, (req, res) => {
   getUsers()
     .then(users => {
       res.send(users);
