@@ -201,7 +201,7 @@ router.post('/:boatId', function (req, res){
 router.put('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
   // we know boat doesn't exist if id is not a number
   if (isNaN(req.params.boatId)) {
-    return res.status(403).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on another boat'});
+    return res.status(403).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on a boat'});
   }
 
   // we know load doesn't exist if id is not a number
@@ -216,7 +216,7 @@ router.put('/:boatId/loads/:loadId', checkJwt, handleJwtErrors, (req, res) => {
           res.status(code).send({'Error': 'The load does not exist'});
           break;
         case 403:
-          res.status(code).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on another boat'});
+          res.status(code).send({'Error': 'The boat is owned by someone else or does not exist, or the load is already loaded on a boat'});
           break;
         default:
           res.status(204).end();
