@@ -63,7 +63,7 @@ async function postLoad(volume, item, creation_date) {
 /**
  * Edits the load with the passed-in id.
  * @param {string} loadId 
- * @param {updates} object optionally contains volume, item, and creaton_date to be updated
+ * @param {updates} object optionally contains volume, item, and creation_date to be updated
  * @returns promise resolving to either updated object or integer indicating appropriate code.
  * 404 if load does not exist
  * new object if successful patch

@@ -24,7 +24,7 @@ A Boat's owner is the user that created the Boat.
 ### Loads
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|volume|volume of the load in cubic feet|integer| Required. Must be a positive integer.|
+|volume|volume of the load in cubic feet|integer| Required. Cannot be null. Must be a positive integer.|
 |item|item in the load|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
 |creation_date|date the load was created|string| Required. Cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.|
 |id|id of the load|integer|Created automatically upon creation. Do not include in POST body.|
@@ -388,7 +388,7 @@ Body:
 
 # Edit Boat with PUT
 ## PUT /boats/:boatId
-Edits boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be edited only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token. Requires all required attributes in request body.
+Edits boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be edited only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token. Requires all required attributes in request body. Cannot change owner.
 
 ## Request
 ### Path Parameters
@@ -544,7 +544,7 @@ Body:
 
 # Edit Boat with PATCH
 ## PATCH /boats/:boatId
-Edits boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be edited only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token. Not all properties are required in request body. Included properties will update on the boat and other properties will remain the same.
+Edits boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be edited only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token. Not all properties are required in request body. Included properties will update on the boat and other properties will remain the same. Cannot change owner.
 
 ## Request
 ### Path Parameters
@@ -718,7 +718,7 @@ Failure: JSON
 |Outcome|Status Code|Notes|
 |---|---|---|
 |Success|204 No Content||
-|Failure|401 Unauthorized|If the "Authorization" header is not set to a valid JWT, the boat will not be delted.
+|Failure|401 Unauthorized|If the "Authorization" header is not set to a valid JWT, the boat will not be deleted.
 |Failure|403 Forbidden|If no boat exists with the passed-in boatId or if the "Authorization" header is set to a valid JWT but the JWT does not correspond to the user who owns the boat, no boat will not be deleted.
 
 ### Response Examples
@@ -770,7 +770,7 @@ JSON
 
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|volume|volume of the load in cubic feet|integer| Required. Must be a positive integer.|
+|volume|volume of the load in cubic feet|integer| Required. Cannot be null. Must be a positive integer.|
 |item|item in the load|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
 |creation_date|date the load was created|string| Required. Cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.|
 
@@ -1021,8 +1021,8 @@ JSON
 |Outcome|Status Code|Notes|
 |---|---|---|
 |Success|200 OK||
-|Failure|404 Not Found|If no load exists with the passed-in loadId, no boat will be returned.
-|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no boat will be returned.
+|Failure|404 Not Found|If no load exists with the passed-in loadId, no load will be returned.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no load will be returned.
 
 ### Response Examples
 ### Success
@@ -1031,32 +1031,24 @@ Status: 200 OK
 
 Body:
 {
-    "length": 50,
-    "type": "Sloop",
-    "owner": "auth0|6383e893a8b2c2ec60b332c9",
-    "name": "Sloop John Boone",
-    "loads": [],
-    "id": "5673082664517632",
-    "self": "https://melsbyg-cloud-final.uw.r.appspot.com/boats/5673082664517632"
+    "carrier": {
+        "id": "5680529164730368",
+        "self": "https://melsbyg-cloud-final.uw.r.appspot.com/boats/5680529164730368"
+    },
+    "volume": 50,
+    "creation_date": "10/20/2022",
+    "item": "Roses",
+    "id": "5714489739575296",
+    "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5714489739575296"
 }
 ```
 ### Failure
-Invalid or missing JWT Bearer Token in Authorization header
+Load with passed-in id does not exist
 ```
-Status: 401 Bad Request 
-
-Body:
-{
-    "Error": "Bad Credentials"
-}
-```
-
-Boat with passed-in id does not exist or JWT in Authorization header corresponds to a user who does not own the boat
-```
-Status: 403 Forbidden
+Status: 404 Not Found
 
 {
-    "Error": "Boat does not exist or is owned by someone else"
+    "Error": "Load does not exist"
 }
 ```
 
@@ -1067,6 +1059,334 @@ Status: 406 Not Acceptable
 Body:
 {
     "Error": "Endpoint only can respond with application/json data"
+}
+```
+
+# Edit Load with PUT
+## PUT /loads/:loadId
+Edits load with passed-in id. Requires all required attributes in request body. Cannot change carrier.
+
+## Request
+### Path Parameters
+|Name|Description|
+|---|---|
+|loadId|id of the load to be edited|
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Accepts| must be set to application/json|
+
+### Query Parameters
+None
+
+### Request Body
+Required
+
+### Request Body Format
+JSON
+
+### Request JSON Attributes
+|Property|Description|Type|Notes|
+|---|---|---|---|
+|volume|volume of the load in cubic feet|integer| Required. Cannot be null. Must be a positive integer.|
+|item|item in the load|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|creation_date|date the load was created|string| Required. Cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.|
+
+### Request Body Example
+```
+{
+    "volume": 30,
+    "item": "Wine",
+    "creation_date": "09/09/1999"
+}
+```
+
+## Response
+
+### Response Body Format
+JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|200 OK||
+|Failure|400 Bad Request|If the request is missing any of the 3 required attributes, the load will not be edited.|
+|Failure|404 Not Found|If no load exists with the passed-in loadId, no load will be edited.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no boat will be returned.
+
+### Response Examples
+### Success
+```
+Status: 200 OK
+
+Body:
+{
+    "volume": 30,
+    "item": "Wine",
+    "creation_date": "09/09/1999",
+    "carrier": {
+        "id": "5680529164730368",
+        "self": "https://melsbyg-cloud-final.uw.r.appspot.com/boats/5680529164730368"
+    },
+    "id": "5714489739575296",
+    "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5714489739575296"
+}
+```
+### Failure
+Missing Required Property
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "Request is missing one or more required properties"
+}
+```
+Extra Property Present
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "One or more properties in the request are not valid"
+}
+```
+
+Value of 'volume' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "volume value in request is not valid"
+}
+```
+Value of 'item' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "item value in request is not valid"
+}
+```
+Value of 'creation_date' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "creation_date value in request is not valid"
+}
+```
+Syntax error in JSON
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "Unexpected string in JSON at position 13"
+}
+```
+Load with passed-in id does not exist
+```
+Status: 404 Not Found
+
+{
+    "Error": "Load does not exist"
+}
+```
+
+Accept header does not indicate application/json is acceptable
+```
+Status: 406 Not Acceptable
+
+Body:
+{
+    "Error": "Endpoint only can respond with application/json data"
+}
+```
+
+# Edit Load with PATCH
+## PUT /loads/:loadId
+Edits load with passed-in id. Not all properties are required in request body. Included properties will update on the load and other properties will remain the same. Cannot change carrier.
+
+## Request
+### Path Parameters
+|Name|Description|
+|---|---|
+|loadId|id of the load to be edited|
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Accepts| must be set to application/json|
+
+### Query Parameters
+None
+
+### Request Body
+Required
+
+### Request Body Format
+JSON
+
+### Request JSON Attributes
+|Property|Description|Type|Notes|
+|---|---|---|---|
+|volume|volume of the load in cubic feet|integer| If included, cannot be null. Must be a positive integer.|
+|item|item in the load|string| If included, cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|creation_date|date the load was created|string| If included, cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.|
+
+### Request Body Example
+```
+{
+    "volume": 40,
+    "item": "Flowers"
+}
+```
+
+## Response
+
+### Response Body Format
+JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|200 OK||
+|Failure|400 Bad Request|If the properties in the request are not valid, the load will not be edited.|
+|Failure|404 Not Found|If no load exists with the passed-in loadId, no load will be edited.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no boat will be returned.
+
+### Response Examples
+### Success
+```
+Status: 200 OK
+
+Body:
+{
+    "item": "Flowers",
+    "creation_date": "10/20/2022",
+    "carrier": {
+        "id": "5680529164730368",
+        "self": "https://melsbyg-cloud-final.uw.r.appspot.com/boats/5680529164730368"
+    },
+    "volume": 40,
+    "id": "5714489739575296",
+    "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5714489739575296"
+}
+```
+### Failure
+Extra Property Present
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "One or more properties in the request are not valid"
+}
+```
+
+Value of 'volume' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "volume value in request is not valid"
+}
+```
+Value of 'item' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "item value in request is not valid"
+}
+```
+Value of 'creation_date' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "creation_date value in request is not valid"
+}
+```
+Syntax error in JSON
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "Unexpected string in JSON at position 13"
+}
+```
+Load with passed-in id does not exist
+```
+Status: 404 Not Found
+
+{
+    "Error": "Load does not exist"
+}
+```
+
+Accept header does not indicate application/json is acceptable
+```
+Status: 406 Not Acceptable
+
+Body:
+{
+    "Error": "Endpoint only can respond with application/json data"
+}
+```
+
+# Delete Load
+## DELETE /loads/:loadId
+Deletes load with passed-in id.
+
+## Request
+### Path Parameters
+|Name|Description|
+|---|---|
+|loadId|id of the load to be deleted|
+
+### Request Headers
+None
+
+### Query Parameters
+None
+
+### Request Body
+None
+
+## Response
+
+### Response Body Format
+Success: No body \
+Failure: JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|204 No Content||
+|Failure|404 Not Found|If no load exists with the passed-in loadId, no load will not be deleted.
+
+### Response Examples
+### Success
+```
+Status: 204 No Content
+```
+### Failure
+Load with passed-in id does not exist
+```
+Status: 404 Not Found
+
+{
+    "Error": "Load does not exist"
 }
 ```
 
