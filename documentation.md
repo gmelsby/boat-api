@@ -22,6 +22,7 @@ Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://
 [Remove Load from Boat](#remove-load-from-boat) \
 [Get List of Users](#get-list-of-users)
 
+\newpage
 
 ## Data Model
 The application store three kinds of entities in Datastore: Boats, Loads and Users. \
@@ -55,6 +56,7 @@ A Boat's owner is the user that created the Boat.
 |email|email address of the user|string| Created upon first user login.|
 
 
+\newpage
 # Create A Boat
 ## POST /boats
 Allows creation of a new boat. Boats are a protected resource, so request must contain a valid JWT.
@@ -196,6 +198,7 @@ Body:
 }
 ```
 
+\newpage
 # Get List of Owned Boats
 ## GET /boats
 Gets a list of user's boats. Boats are a protected resource, so request must contain a valid JWT. Only the boats that belong to the user whose JWT is in the Authorization header as a Bearer token. Response is paginated and returns at most 5 boats per page.
@@ -323,6 +326,7 @@ Body:
 }
 ```
 
+\newpage
 # Get Boat by Id
 ## GET /boats/:boatId
 Gets representation of boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat representation will be retrieved only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token.
@@ -404,6 +408,7 @@ Body:
 }
 ```
 
+\newpage
 # Edit Boat with PUT
 ## PUT /boats/:boatId
 Edits boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be edited only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token. Requires all required attributes in request body. Cannot change owner.
@@ -560,6 +565,7 @@ Body:
 }
 ```
 
+\newpage
 # Edit Boat with PATCH
 ## PATCH /boats/:boatId
 Edits boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be edited only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token. Not all properties are required in request body. Included properties will update on the boat and other properties will remain the same. Cannot change owner.
@@ -705,6 +711,7 @@ Body:
 }
 ```
 
+\newpage
 # Delete Boat
 ## DELETE /boats/:boatId
 Deletes boat with passed-in id. Boats are a protected resource, so request must contain a valid JWT. Boat will be deleted only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token.
@@ -765,6 +772,7 @@ Status: 403 Forbidden
 ```
 
 
+\newpage
 # Create A Load
 ## POST /loads
 Allows creation of a new load.
@@ -895,6 +903,7 @@ Body:
 }
 ```
 
+\newpage
 # Get All Loads
 ## GET /loads
 Gets a list of all loads. Response is paginated and returns at most 5 boats per page.
@@ -1009,6 +1018,7 @@ Body:
 }
 ```
 
+\newpage
 # Get Load by Id
 ## GET /loads/:loadId
 Gets representation of load with passed-in id. 
@@ -1080,6 +1090,7 @@ Body:
 }
 ```
 
+\newpage
 # Edit Load with PUT
 ## PUT /loads/:loadId
 Edits load with passed-in id. Requires all required attributes in request body. Cannot change carrier.
@@ -1226,6 +1237,7 @@ Body:
 }
 ```
 
+\newpage
 # Edit Load with PATCH
 ## PATCH /loads/:loadId
 Edits load with passed-in id. Not all properties are required in request body. Included properties will update on the load and other properties will remain the same. Cannot change carrier.
@@ -1362,6 +1374,7 @@ Body:
 }
 ```
 
+\newpage
 # Delete Load
 ## DELETE /loads/:loadId
 Deletes load with passed-in id.
@@ -1408,6 +1421,7 @@ Status: 404 Not Found
 }
 ```
 
+\newpage
 # Put Load on Boat
 ## PUT /boats/:boatId/load/:loadId
 Places load with passed-in loadId on boat with passed-in loadId. Boats are a protected resource, so request must contain a valid JWT. Load will be placed on boat only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token and the load is not already on another boat. Updates "carrier" property of load.
@@ -1480,6 +1494,7 @@ Body:
 }
 ```
 
+\newpage
 # Remove Load from Boat
 ## DELETE /boats/:boatId/load/:loadId
 Removes load with passed-in loadId on boat with passed-in loadId. Boats are a protected resource, so request must contain a valid JWT. Load will be removed from boat only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token and the load is on the boat. Updates "carrier" property of load to null.
@@ -1551,6 +1566,7 @@ Body:
 }
 ```
 
+\newpage
 # Get List of Users
 ## GET /users
 Gets a list of the application's users.
