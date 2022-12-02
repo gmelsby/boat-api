@@ -55,6 +55,7 @@ A Boat's owner is the user that created the Boat.
 |---|---|---|---|
 |id|id of the user. "sub" property of user JWT.|string| Created upon first user login.|
 |email|email address of the user|string| Created upon first user login.|
+Users identify themselves when attempting to modify protected resources by setting the "Authorization" header of their requests to a Bearer token containing a JWT that can be acquired through account creation and login at the application URL through a web browser.
 
 
 \newpage
@@ -776,7 +777,7 @@ Status: 403 Forbidden
 \newpage
 # Create A Load
 ## POST /loads
-Allows creation of a new load.
+Allows creation of a new load. Loads are not a protected resource, so no authentication is required.
 
 ## Request
 ### Path Parameters
@@ -907,7 +908,7 @@ Body:
 \newpage
 # Get All Loads
 ## GET /loads
-Gets a list of all loads. Response is paginated and returns at most 5 boats per page.
+Gets a list of all loads. Response is paginated and returns at most 5 loads per page. Loads are not a protected resource, so no authentication is required.
 
 ## Request
 ### Path Parameters
@@ -1022,7 +1023,7 @@ Body:
 \newpage
 # Get Load by Id
 ## GET /loads/:loadId
-Gets representation of load with passed-in id. 
+Gets representation of load with passed-in id. Loads are not a protected resource, so no authentication is required.
 
 ## Request
 ### Path Parameters
@@ -1094,7 +1095,7 @@ Body:
 \newpage
 # Edit Load with PUT
 ## PUT /loads/:loadId
-Edits load with passed-in id. Requires all required attributes in request body. Cannot change carrier.
+Edits load with passed-in id. Requires all required attributes in request body. Cannot change carrier. Loads are not a protected resource, so no authentication is required.
 
 ## Request
 ### Path Parameters
@@ -1241,7 +1242,7 @@ Body:
 \newpage
 # Edit Load with PATCH
 ## PATCH /loads/:loadId
-Edits load with passed-in id. Not all properties are required in request body. Included properties will update on the load and other properties will remain the same. Cannot change carrier.
+Edits load with passed-in id. Not all properties are required in request body. Included properties will update on the load and other properties will remain the same. Cannot change carrier. Loads are not a protected resource, so no authentication is required.
 
 ## Request
 ### Path Parameters
@@ -1378,7 +1379,7 @@ Body:
 \newpage
 # Delete Load
 ## DELETE /loads/:loadId
-Deletes load with passed-in id.
+Deletes load with passed-in id. Loads are not a protected resource, so no authentication is required. 
 
 ## Request
 ### Path Parameters
@@ -1570,7 +1571,7 @@ Body:
 \newpage
 # Get List of Users
 ## GET /users
-Gets a list of the application's users.
+Gets a list of the application's users. No authentication is required.
 
 ## Request
 ### Path Parameters
