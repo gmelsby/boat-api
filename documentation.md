@@ -3,7 +3,10 @@ Gregory Melsby \
 melsbyg@oregonstate.edu \
 Fall 2022
 
-Application deployed at: https://melsbyg-cloud-final.uw.r.appspot.com
+Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com]((https://melsbyg-cloud-final.uw.r.appspot.com))
+
+## Table of Contents
+
 
 ## Data Model
 The application store three kinds of entities in Datastore: Boats, Loads and Users. \
