@@ -1390,3 +1390,75 @@ Status: 404 Not Found
 }
 ```
 
+# Put Load on Boat
+## PUT /boats/:boatId/load/:loadId
+Places load with passed-in loadId on boat with passed-in loadId. Boats are a protected resource, so request must contain a valid JWT. Load will be placed on boat only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token and the load is not already on another boat. Updates "carrier" property of load.
+
+## Request
+### Path Parameters
+|Name|Description|
+|---|---|
+|loadId|id of the load to be placed on the boat|
+|boatId|id of the boat the load is to be placed on|
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Authorization| must be set to a Bearer token of a registered user|
+
+### Query Parameters
+None
+
+### Request Body
+None
+
+## Response
+
+### Response Body Format
+Success: No body \
+Failure: JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|204 No Content||
+|Failure|401 Unauthorized|If the "Authorization" header is not set to a valid JWT, the load will not be placed on the boat.
+|Failure|403 Forbidden|If no boat exists with the passed-in boatId, if the "Authorization" header is set to a valid JWT but the JWT does not correspond to the user who owns the boat, or if the load is already on a boat, the load will not be placed on the boat.
+|Failure|404 Not Found|If no load exists with the passed-in loadId, the load will not be placed on the boat.
+
+### Response Examples
+### Success
+```
+Status: 204 No Content
+```
+### Failure
+Invalid or missing JWT Bearer Token in Authorization header
+```
+Status: 401 Unauthorized
+
+Body:
+{
+    "Error": "Bad Credentials"
+}
+```
+
+Boat with passed-in id does not exist, JWT in Authorization header corresponds to a user who does not own the boat, or the load is already on a boat
+```
+Status: 403 Forbidden
+
+{
+
+    "Error": "The boat is owned by someone else or does not exist, or the load is already loaded on a boat"
+}
+```
+
+Load with passed-in id does not exist.
+```
+Status: 404 Not Found
+
+Body:
+{
+    "Error": "The load does not exist"
+}
+```
+
