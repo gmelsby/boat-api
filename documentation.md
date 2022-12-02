@@ -1462,3 +1462,131 @@ Body:
 }
 ```
 
+# Remove Load from Boat
+## DELETE /boats/:boatId/load/:loadId
+Removes load with passed-in loadId on boat with passed-in loadId. Boats are a protected resource, so request must contain a valid JWT. Load will be removed from boat only if the boat belongs to the user whose JWT is in the Authorization header as a Bearer token and the load is on the boat. Updates "carrier" property of load to null.
+
+## Request
+### Path Parameters
+|Name|Description|
+|---|---|
+|loadId|id of the load to be removed from the boat|
+|boatId|id of the boat the load is to be removed from|
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Authorization| must be set to a Bearer token of a registered user|
+
+### Query Parameters
+None
+
+### Request Body
+None
+
+## Response
+
+### Response Body Format
+Success: No body \
+Failure: JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|204 No Content||
+|Failure|401 Unauthorized|If the "Authorization" header is not set to a valid JWT, the load will not be removed from the boat.
+|Failure|403 Forbidden|If no boat exists with the passed-in boatId, if the "Authorization" header is set to a valid JWT or if the JWT does not correspond to the user who owns the boat, the load will not be removed from the boat.
+|Failure|404 Not Found|If no load exists with the passed-in loadId or if the load is not on the boat with the passed-in boatId, no load will not be removed from the boat.
+
+### Response Examples
+### Success
+```
+Status: 204 No Content
+```
+### Failure
+Invalid or missing JWT Bearer Token in Authorization header
+```
+Status: 401 Unauthorized
+
+Body:
+{
+    "Error": "Bad Credentials"
+}
+```
+
+Boat with passed-in id does not exist, JWT in Authorization header corresponds to a user who does not own the boat, or the load is already on a boat
+```
+Status: 403 Forbidden
+
+{
+    "Error": "The boat is owned by someone else or does not exist"
+}
+```
+
+Load with passed-in id does not exist.
+```
+Status: 404 Not Found
+
+Body:
+{
+    "Error": "The load does not exist"
+}
+```
+
+# Get List of Users
+## GET /users
+Gets a list of the application's users.
+
+## Request
+### Path Parameters
+None
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Accepts| must be set to application/json|
+
+### Query Parameters
+None
+
+### Request Body
+None
+
+## Response
+
+### Response Body Format
+JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|200 OK||
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no list of users will be returned.
+
+### Response Examples
+### Success
+```
+Status: 200 OK
+
+Body:
+[
+    {
+        "email": "wallace@cheese.com",
+        "id": "auth0|6383e893a8b2c2ec60b332c9"
+    },
+    {
+        "email": "melsbyg@oregonstate.edu",
+        "id": "google-oauth2|101200093123048132943"
+    }
+]
+```
+### Failure
+Accept header does not indicate application/json is acceptable
+```
+Status: 406 Not Acceptable
+
+Body:
+{
+    "Error": "Endpoint only can respond with application/json data"
+}
+```
