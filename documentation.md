@@ -4,6 +4,7 @@ melsbyg@oregonstate.edu \
 Fall 2022
 
 Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com)
+Account Creation/Login URL: [https://melsbyg-cloud-final.uw.r.appspot.com/login](https://melsbyg-cloud-final.uw.r.appspot.com/login)
 
 ## Table of Contents
 [Create a Boat](#create-a-boat) \
