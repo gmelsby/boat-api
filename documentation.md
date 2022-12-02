@@ -209,7 +209,7 @@ JSON
 |Outcome|Status Code|Notes|
 |---|---|---|
 |Success|200 OK||
-|Failure|400 Bad Request|If the 'cursor' query parameter is not recognized by Datastore, not list of boats will be returned.
+|Failure|400 Bad Request|If the 'cursor' query parameter is not recognized by Datastore, no list of boats will be returned.
 |Failure|401 Unauthorized|If the "Authorization" header is not set to a valid JWT, no list of boats will be returned.
 |Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no list of boats will be returned.
 
@@ -980,6 +980,67 @@ Body:
     "Error": "Cursor in request params not recognized"
 }
 ```
+
+Accept header does not indicate application/json is acceptable
+```
+Status: 406 Not Acceptable
+
+Body:
+{
+    "Error": "Endpoint only can respond with application/json data"
+}
+```
+
+# Get Load by Id
+## GET /loads/:loadId
+Gets representation of load with passed-in id. 
+
+## Request
+### Path Parameters
+|Name|Description|
+|---|---|
+|loadId|id of the load to be retrieved|
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Accepts| must be set to application/json|
+
+### Query Parameters
+None
+
+### Request Body
+None
+
+## Response
+
+### Response Body Format
+JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|200 OK||
+|Failure|404 Not Found|If no load exists with the passed-in loadId, no boat will be returned.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no boat will be returned.
+
+### Response Examples
+### Success
+```
+Status: 200 OK
+
+Body:
+{
+    "length": 50,
+    "type": "Sloop",
+    "owner": "auth0|6383e893a8b2c2ec60b332c9",
+    "name": "Sloop John Boone",
+    "loads": [],
+    "id": "5673082664517632",
+    "self": "https://melsbyg-cloud-final.uw.r.appspot.com/boats/5673082664517632"
+}
+```
+### Failure
 Invalid or missing JWT Bearer Token in Authorization header
 ```
 Status: 401 Bad Request 
@@ -987,6 +1048,15 @@ Status: 401 Bad Request
 Body:
 {
     "Error": "Bad Credentials"
+}
+```
+
+Boat with passed-in id does not exist or JWT in Authorization header corresponds to a user who does not own the boat
+```
+Status: 403 Forbidden
+
+{
+    "Error": "Boat does not exist or is owned by someone else"
 }
 ```
 
@@ -999,3 +1069,4 @@ Body:
     "Error": "Endpoint only can respond with application/json data"
 }
 ```
+
