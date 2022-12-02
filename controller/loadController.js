@@ -63,6 +63,9 @@ router.get('/', acceptJson, (req, res) => {
         res.status(400).json({"Error": "Cursor in request params not recognized"});
       }
       else {
+        if (err.code === 3) {
+          res.status(400).json({"Error": "Cursor in request params not recognized"});
+        }
         console.log(err);
         res.status(500).send({"Error": "Something went wrong on our end"});
       }

@@ -15,26 +15,26 @@ A Boat's owner is the user that created the Boat.
 ### Boats
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|name|name of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|type|type of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|length|length of the boat in feet|integer| Required. Must be a positive integer.
-|id|id of the boat|integer|Created automatically upon creation. Do not include in POST body.
-|owner|user id of the boat's owner|string|Created automatically upon creation based on creating user. Do not include in POST body.
+|name|name of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|type|type of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|length|length of the boat in feet|integer| Required. Must be a positive integer.|
+|id|id of the boat|integer|Created automatically upon creation. Do not include in POST body.|
+|owner|user id of the boat's owner|string|Created automatically upon creation based on creating user. Do not include in POST body.|
 
 ### Loads
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|volume|volume of the load in cubic feet|integer| Required. Must be a positive integer.
-|item|item in the load|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|creation_date|date the load was created|string| Required. Cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.
-|id|id of the load|integer|Created automatically upon creation. Do not include in POST body.
-|carrier|id of the boat the load is on|integer|Set to null upon creation, can be updated with PUT on /boats/:boatId/loads/:loadId. Do not include in POST body.
+|volume|volume of the load in cubic feet|integer| Required. Must be a positive integer.|
+|item|item in the load|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|creation_date|date the load was created|string| Required. Cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.|
+|id|id of the load|integer|Created automatically upon creation. Do not include in POST body.|
+|carrier|id of the boat the load is on|integer|Set to null upon creation, can be updated with PUT on /boats/:boatId/loads/:loadId. Do not include in POST body.|
 
 ### Users
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|id|id of the user. "sub" property of user JWT.|string| Created upon first user login.
-|email|email address of the user|string| Created upon first user login.
+|id|id of the user. "sub" property of user JWT.|string| Created upon first user login.|
+|email|email address of the user|string| Created upon first user login.|
 
 
 # Create A Boat
@@ -60,9 +60,9 @@ JSON
 ### Request JSON Attributes
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|name|name of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|type|type of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|length|length of the boat in feet|integer| Required. Must be a positive integer.
+|name|name of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|type|type of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|length|length of the boat in feet|integer| Required. Must be a positive integer.|
 
 ### Request Body Example
 ```
@@ -215,7 +215,8 @@ JSON
 
 ### Response Examples
 ### Success
-The URL indicated by "cursor" is how the next page of results is accessed. \
+The URL indicated by "next" is how the next page of results is accessed. \
+If "next" is not present, there are no more results. \
 "count" indicates the total number of boats the user owns. 
 ```
 Status: 200 OK
@@ -413,9 +414,9 @@ JSON
 ### Request JSON Attributes
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|name|name of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|type|type of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|length|length of the boat in feet|integer| Required. Must be a positive integer.
+|name|name of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|type|type of the boat|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|length|length of the boat in feet|integer| Required. Must be a positive integer.|
 
 ### Request Body Example
 ```
@@ -569,9 +570,9 @@ JSON
 ### Request JSON Attributes
 |Property|Description|Type|Notes|
 |---|---|---|---|
-|name|name of the boat|string| If included, cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|type|type of the boat|string| If included, cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.
-|length|length of the boat in feet|integer| If included, must be a positive integer.
+|name|name of the boat|string| If included, cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|type|type of the boat|string| If included, cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|length|length of the boat in feet|integer| If included, must be a positive integer.|
 
 ### Request Body Example
 ```
@@ -742,5 +743,259 @@ Status: 403 Forbidden
 
 {
     "Error": "Boat does not exist or is owned by someone else"
+}
+```
+
+
+# Create A Load
+## POST /loads
+Allows creation of a new load.
+
+## Request
+### Path Parameters
+None
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Accepts| must be set to application/json|
+
+### Request Body
+Required
+
+### Request Body Format
+JSON
+
+### Request JSON Attributes
+
+|Property|Description|Type|Notes|
+|---|---|---|---|
+|volume|volume of the load in cubic feet|integer| Required. Must be a positive integer.|
+|item|item in the load|string| Required. Cannot be null. Must not include the characters "<>{}[]". Must not be an empty string or over 30 characters in length. Must not have whitespace at the beginning or end of string.|
+|creation_date|date the load was created|string| Required. Cannot be null. Must be of the form "XX/XX/XXXX" where each group of characters is a number.|
+
+### Request Body Example
+```
+{
+    "volume": 50,
+    "item": "Roses",
+    "creation_date": "10/20/2022"
+}
+```
+
+## Response
+
+### Response Body Format
+JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|201 Created||
+|Failure|400 Bad Request|If the request is missing any of the 3 required attributes, the boat will not be created.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no boat will be created.
+
+### Response Examples
+### Success
+```
+Status: 201 Created
+
+Body:
+{
+    "volume": 50,
+    "item": "Roses",
+    "creation_date": "10/20/2022",
+    "carrier": null,
+    "id": "5702893864747008",
+    "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5702893864747008"
+}
+```
+### Failure
+
+Missing Required Property
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "Request is missing one or more required properties"
+}
+```
+Extra Property Present
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "One or more properties in the request are not valid"
+}
+```
+
+Value of 'volume' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "volume value in request is not valid"
+}
+```
+Value of 'item' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "item value in request is not valid"
+}
+```
+Value of 'creation_date' is not valid
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "creation_date value in request is not valid"
+}
+```
+Syntax error in JSON
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "Unexpected string in JSON at position 13"
+}
+```
+Accept header does not indicate application/json is acceptable
+```
+Status: 406 Not Acceptable
+
+Body:
+{
+    "Error": "Endpoint only can respond with application/json data"
+}
+```
+
+# Get All Loads
+## GET /loads
+Gets a list of all loads. Response is paginated and returns at most 5 boats per page.
+
+## Request
+### Path Parameters
+None
+
+### Request Headers
+|Header|Notes|
+|---|---|
+|Accepts| must be set to application/json|
+
+### Query Parameters
+|Name|Description|
+|---|---|
+|cursor|Optional. Corresponds to a Datastore cursor. Helps implement pagination.
+
+### Request Body
+None
+
+## Response
+
+### Response Body Format
+JSON
+
+### Response Statuses
+|Outcome|Status Code|Notes|
+|---|---|---|
+|Success|200 OK||
+|Failure|400 Bad Request|If the 'cursor' query parameter is not recognized by Datastore, no list of loads will be returned.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no list of loads will be returned.
+
+### Response Examples
+### Success
+The URL indicated by "next" is how the next page of results is accessed. \
+If "next" is not present, there are no more results. \
+"count" indicates the total number of loads.
+```
+Status: 200 OK
+
+Body:
+{
+    "loads": [
+        {
+            "carrier": null,
+            "item": "Water Bottles",
+            "creation_date": "09/20/2001",
+            "volume": 80,
+            "id": "4802063531769856",
+            "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/4802063531769856"
+        },
+        {
+            "carrier": null,
+            "volume": 70,
+            "item": "Bananas",
+            "creation_date": "09/20/2000",
+            "id": "5075408403824640",
+            "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5075408403824640"
+        },
+        {
+            "item": "Roses",
+            "carrier": null,
+            "creation_date": "10/21/2022",
+            "volume": 40,
+            "id": "5638358357245952",
+            "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5638358357245952"
+        },
+        {
+            "volume": 60,
+            "carrier": null,
+            "creation_date": "10/20/2000",
+            "item": "Phones",
+            "id": "5679095853613056",
+            "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5679095853613056"
+        },
+        {
+            "creation_date": "10/20/2022",
+            "carrier": {
+                "id": "6263382969679872",
+                "self": "https://melsbyg-cloud-final.uw.r.appspot.com/boats/6263382969679872"
+            },
+            "volume": 50,
+            "item": "Roses",
+            "id": "5702893864747008",
+            "self": "https://melsbyg-cloud-final.uw.r.appspot.com/loads/5702893864747008"
+        }
+    ],
+    "next": "https://melsbyg-cloud-final.uw.r.appspot.com/loads?cursor=CjISLGoXenV3fm1lbHNieWctY2xvdWQtZmluYWxyEQsSBExvYWQYgICAmIfYkAoMGAAgAA%3D%3D",
+    "count": 6
+}
+```
+### Failure
+
+'cursor' query parameter not recognized by Datastore
+```
+Status: 400 Bad Request 
+
+Body:
+{
+    "Error": "Cursor in request params not recognized"
+}
+```
+Invalid or missing JWT Bearer Token in Authorization header
+```
+Status: 401 Bad Request 
+
+Body:
+{
+    "Error": "Bad Credentials"
+}
+```
+
+Accept header does not indicate application/json is acceptable
+```
+Status: 406 Not Acceptable
+
+Body:
+{
+    "Error": "Endpoint only can respond with application/json data"
 }
 ```
