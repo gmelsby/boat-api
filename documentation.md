@@ -3,9 +3,24 @@ Gregory Melsby \
 melsbyg@oregonstate.edu \
 Fall 2022
 
-Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com]((https://melsbyg-cloud-final.uw.r.appspot.com))
+Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com)
 
 ## Table of Contents
+[Create a Boat](#create-a-boat) \
+[Get List of Owned Boats](#get-list-of-owned-boats) \
+[Get Boat by Id](#get-boat-by-id) \
+[Edit Boat with PUT](#edit-boat-with-put) \
+[Edit Boat with PATCH](#edit-boat-with-patch) \
+[Delete Boat](#delete-boat) \
+[Create a Load](#create-a-load) \
+[Get All Loads](#get-all-loads) \
+[Get Load by Id](#get-load-by-id) \
+[Edit Load with PUT](#edit-load-with-put) \
+[Edit Load with PATCH](#edit-load-with-patch) \
+[Delete Load](#delete-load) \
+[Put Load on Boat](#put-load-on-boat) \
+[Remove Load from Boat](#remove-load-from-boat) \
+[Get List of Users](#get-list-of-users)
 
 
 ## Data Model
@@ -1212,7 +1227,7 @@ Body:
 ```
 
 # Edit Load with PATCH
-## PUT /loads/:loadId
+## PATCH /loads/:loadId
 Edits load with passed-in id. Not all properties are required in request body. Included properties will update on the load and other properties will remain the same. Cannot change carrier.
 
 ## Request
