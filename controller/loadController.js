@@ -90,11 +90,6 @@ router.delete('/', function (req, res){
 
 
 router.get('/:loadId', acceptJson, loadIdIsNumber, (req, res) => {
-  // make sure id is a numerical
-  if (isNaN(req.params.loadId)) {
-      return res.status(404).send({"Error": "Load does not exist"});
-  }
-
   model.getLoad(req.params.loadId)
     .then(load => {
         if (load === 404) {
