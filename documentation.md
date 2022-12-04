@@ -3,10 +3,12 @@ Gregory Melsby \
 melsbyg@oregonstate.edu \
 Fall 2022
 
-Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com)
-Account Creation/Login URL: [https://melsbyg-cloud-final.uw.r.appspot.com/login](https://melsbyg-cloud-final.uw.r.appspot.com/login)
+Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com) \
+Account Creation/Login: [https://melsbyg-cloud-final.uw.r.appspot.com/login](https://melsbyg-cloud-final.uw.r.appspot.com/login)
 
 ## Table of Contents
+(Each entry is a link to the relevant section)
+
 [Create a Boat](#create-a-boat) \
 [Get List of Owned Boats](#get-list-of-owned-boats) \
 [Get Boat by Id](#get-boat-by-id) \
@@ -820,8 +822,8 @@ JSON
 |Outcome|Status Code|Notes|
 |---|---|---|
 |Success|201 Created||
-|Failure|400 Bad Request|If the request is missing any of the 3 required attributes, the boat will not be created.
-|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no boat will be created.
+|Failure|400 Bad Request|If the request is missing any of the 3 required attributes, the load will not be created.
+|Failure|406 Not Acceptable|If the "Accept" header does not indicate application/json will be accepted, no load will be created.
 
 ### Response Examples
 ### Success
@@ -1481,8 +1483,8 @@ Boat with passed-in id does not exist, JWT in Authorization header corresponds t
 Status: 403 Forbidden
 
 {
-
-    "Error": "The boat is owned by someone else or does not exist, or the load is already loaded on a boat"
+    "Error": "The boat is owned by someone else or does not exist, or the load
+is already loaded on a boat"
 }
 ```
 
