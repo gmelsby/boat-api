@@ -43,11 +43,6 @@ router.post('/', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
 
 
 router.get('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
-  // return 401 if authentication error
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-
   // check that boatId is a number
   if (isNaN(req.params.boatId)) {
     return res.status(403).send({"Error": "Boat does not exist or is owned by someone else"});
@@ -73,31 +68,24 @@ router.get('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
 
 
 router.get('/', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
-  // return 401 if authentication error
-  if (req.auth.error !== undefined) {
-    return res.status(401).send({"Error": "Bad Credentials"});
-  }
-  // sends owner's boats if Jwt is valid
-  else {
-    const sub = req.auth.payload.sub;
-    model.getOwnersBoats(sub, req)
-      .then(reply => {
-        reply.boats.forEach(boat => {
-          boat.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + boat.id;
-          boat.loads = boat.loads.map(l =>({"id": l.id, "self": req.protocol + "://" + req.get("host") + '/loads/' + l.id}));
-        });
-        return res.status(200).send(reply);
-      })
-      .catch(err => {
-        if (err.code === 3) {
-          res.status(400).json({"Error": "Cursor in request params not recognized"});
-        }
-        else {
-          console.log(err);
-          res.status(500).send({"Error": "Something went wrong on our end"});
-        }
+  const sub = req.auth.payload.sub;
+  model.getOwnersBoats(sub, req)
+    .then(reply => {
+      reply.boats.forEach(boat => {
+        boat.self = req.protocol + "://" + req.get("host") + req.baseUrl + '/' + boat.id;
+        boat.loads = boat.loads.map(l =>({"id": l.id, "self": req.protocol + "://" + req.get("host") + '/loads/' + l.id}));
       });
-  }
+      return res.status(200).send(reply);
+    })
+    .catch(err => {
+      if (err.code === 3) {
+        res.status(400).json({"Error": "Cursor in request params not recognized"});
+      }
+      else {
+        console.log(err);
+        res.status(500).send({"Error": "Something went wrong on our end"});
+      }
+    });
 });
 
 router.put('/:boatId', acceptJson, checkJwt, handleJwtErrors, (req, res) => {
