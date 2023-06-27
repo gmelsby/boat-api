@@ -3,7 +3,7 @@ Gregory Melsby \
 melsbyg@oregonstate.edu \
 Fall 2022
 
-Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com) \
+Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com)
 
 ## Table of Contents
 (Each entry is a link to the relevant section)
