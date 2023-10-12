@@ -2,7 +2,7 @@
 
 API to manage the relationship between Boats, Loads (pieces of cargo that go on Boats), and Users (people who own Boats).
 
-Request authorization uses a JWT retrievable with an Auth0 login at [https://melsbyg-cloud-final.uw.r.appspot.com/](https://melsbyg-cloud-final.uw.r.appspot.com/), and request authentication uses the JWT's `sub` property.
+Request authorization uses a JWT retrievable with an Auth0 login, and request authentication uses the JWT's `sub` property.
 
 ## API  Documentation
 Documentation for API endpoints is [here](documentation.md)
