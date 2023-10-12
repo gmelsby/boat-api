@@ -1,7 +1,5 @@
 # API Documentation
 
-Application deployed at: [https://melsbyg-cloud-final.uw.r.appspot.com](https://melsbyg-cloud-final.uw.r.appspot.com)
-
 ## Table of Contents
 [Create a Boat](#create-a-boat) \
 [Get List of Owned Boats](#get-list-of-owned-boats) \
