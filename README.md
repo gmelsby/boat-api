@@ -2,6 +2,8 @@
 
 API to manage the relationship between Boats, Loads (pieces of cargo that go on Boats), and Users (people who own Boats).
 
+Data is persisted using Google Cloud Datastore.
+
 Request authorization uses a JWT retrievable with an Auth0 login, and request authentication uses the JWT's `sub` property.
 
 ## API  Documentation
